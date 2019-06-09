@@ -1,0 +1,48 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>Canvas project</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+
+</head>
+
+<body>
+  <!-- lines througth the browser -->
+  <span class="lineH"></span>
+  <span class="lineV"></span>
+
+  <!-- canvas -->
+  <span>My Canvas</span><br>
+  <canvas id="myCanvas"></canvas>
+  
+
+  <div class="myData">
+    <span>window | </span><span class="coord">coordinates</span><br>
+    <span>canvas | </span><span class="coord_canva">coordinates</span>
+  </div>
+  <div class="gameCommands">
+    <button class="start">start</button>
+  </div>
+
+  
+
+  <script src="js/main.js"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+</body>
+
+</html>

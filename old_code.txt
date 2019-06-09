@@ -1,0 +1,19 @@
+// old elements 
+
+  // center rectangle draw with lines
+  // ctx.beginPath();
+  // ctx.moveTo(256, 144); // start point x, y
+  // ctx.lineTo(384, 144); // line up 
+  // ctx.lineTo(384, 240); // right
+  // ctx.lineTo(256, 240); // bottom
+  // ctx.lineTo(256, 144); // left 
+  // ctx.strokeStyle = "#10eaf0";
+  // ctx.stroke();
+  // ctx.beginPath();
+  // ctx.moveTo(256, 144); // start point x, y
+  // ctx.lineTo(384, 144); // line up 
+  // ctx.lineTo(384, 240); // right
+  // ctx.lineTo(256, 240); // bottom
+  // ctx.lineTo(256, 144); // left 
+  // ctx.strokeStyle = "#10eaf0";
+  // ctx.stroke();

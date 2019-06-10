@@ -21,18 +21,24 @@ let ctx = myCanvas.getContext('2d');
 
 let btnStart = document.querySelector('.start');
 
+/**
+ * pageX and pageY is not good if the page scrolling is on. 
+ * better use screenX - screenY
+ * screen bugs
+ * clientX clientY
+ *  */
 document.addEventListener('mousemove', e => {
-  lineH.setAttribute("style", "top: " + e.pageY + "px;");
-  lineV.setAttribute("style", "left: " + e.pageX + "px;");
-  coordInfo.innerHTML = `x: ${e.pageX} || y: ${e.pageY}`
-  if (e.pageX <= canvas.width && e.pageY <= canvas.height){
+  lineH.setAttribute("style", "top: " + e.clientY + "px;");
+  lineV.setAttribute("style", "left: " + e.clientX + "px;");
+  coordInfo.innerHTML = `x: ${e.clientX} || y: ${e.clientY}`
+  if (e.clientX <= canvas.width && e.clientY <= canvas.height) {
     canvasClick(e);
   }
 });
 
-function canvasClick (e){
+function canvasClick(e) {
   canvas.addEventListener('click', (e) => {
-    coord_canva.innerHTML = `x: ${e.pageX} || y: ${e.pageY}`
+    coord_canva.innerHTML = `x: ${e.clientX} || y: ${e.clientY}`
   });
 }
 
@@ -95,55 +101,55 @@ let animateInnerRectStartY = innerRectStartY;
 
 // this object will draw the inner rectangle that become bigger
 function Rectangle(
-  animateInnerRectStartX, 
-  animateInnerRectStartY, 
-  animateInnerRectWidth, 
-  animateInnerRectHeight, 
-  dratio, 
-  ratioW, 
-  ratioH, 
+  animateInnerRectStartX,
+  animateInnerRectStartY,
+  animateInnerRectWidth,
+  animateInnerRectHeight,
+  dratio,
+  ratioW,
+  ratioH,
   innerRectWidth,
-innerRectHeight,
-innerRectStartX,
-innerRectStartY,){
+  innerRectHeight,
+  innerRectStartX,
+  innerRectStartY, ) {
 
   this.animateInnerRectStartX = animateInnerRectStartX;
   this.animateInnerRectStartY = animateInnerRectStartY;
   this.animateInnerRectWidth = animateInnerRectWidth;
   this.animateInnerRectHeight = animateInnerRectHeight;
   this.dratio = dratio;
-  this.ratioW = ratioW; 
+  this.ratioW = ratioW;
   this.ratioH = ratioH;
   this.innerRectWidth = innerRectWidth;
   this.innerRectHeight = innerRectHeight;
   this.innerRectStartX = innerRectStartX;
   this.innerRectStartY = innerRectStartY;
-  this.draw = function(){
+  this.draw = function () {
     // MOVEMENT ELEMENT
     ctx.beginPath();
     ctx.strokeStyle = "#10eaf0";
     ctx.rect(
-      this.animateInnerRectStartX, 
-      this.animateInnerRectStartY, 
-      this.animateInnerRectWidth, 
+      this.animateInnerRectStartX,
+      this.animateInnerRectStartY,
+      this.animateInnerRectWidth,
       this.animateInnerRectHeight
-      );
+    );
     ctx.stroke();
     // console.log('draw');
 
   }
 
-  this.update = function(){
+  this.update = function () {
     // console.log('update');
     // when the animated width > canvas.width come back to the originals proportions
     if (this.animateInnerRectWidth > canvas.width) {
-      
+
       this.animateInnerRectWidth = this.innerRectWidth;
       this.animateInnerRectHeight = this.innerRectHeight;
       this.animateInnerRectStartX = this.innerRectStartX;
       this.animateInnerRectStartY = this.innerRectStartY;
     }
-    
+
     // dratio == ratio velocity
     // this.dratio = 6;
     this.animateInnerRectWidth += (this.ratioW / this.dratio);
@@ -160,9 +166,9 @@ var rekt = new Rectangle(
   animateInnerRectStartY,
   animateInnerRectWidth,
   animateInnerRectHeight,
-  dratio, 
-  ratioW, 
-  ratioH, 
+  dratio,
+  ratioW,
+  ratioH,
   innerRectWidth,
   innerRectHeight,
   innerRectStartX,
@@ -208,7 +214,7 @@ function animate() {
   ctx.strokeStyle = "#10eaf0";
   ctx.rect(innerRectStartX, innerRectStartY, innerRectWidth, innerRectHeight);
   ctx.stroke();
-// why dont' reset the thing...
+  // why dont' reset the thing...
   // MOVEMENT ELEMENT
   // ctx.beginPath();
   // ctx.strokeStyle = "#10eaf0";
@@ -217,7 +223,7 @@ function animate() {
 
   if (animateInnerRectWidth > canvas.width) {
     console.log('22');
-    
+
     // animateInnerRectWidth = innerRectWidth;
     // animateInnerRectHeight = innerRectHeight;
     // animateInnerRectStartX = innerRectStartX;
@@ -237,6 +243,6 @@ function animate() {
   rekt.update();
 }
 
-btnStart.addEventListener('click', function(){
+btnStart.addEventListener('click', function () {
   animate();
 }) 

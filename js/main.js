@@ -166,7 +166,12 @@ canvas.addEventListener('mousemove', e => {
     posY = e.pageY;
     // console.log(posX, posY)
 });
-
+/**
+ * create a something that will follow the mouse
+ * 
+ * track mouse function, 
+ * lines will follow the mouse
+ */
 function animate() {
   requestAnimationFrame(animate);
   ctx.clearRect(0, 0, innerWidth, innerHeight);

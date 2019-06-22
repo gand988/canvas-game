@@ -67,13 +67,15 @@ let ratioH = 9;
  */
 
 // speed for the increasing of the rectangles 
-let dratio = 6;
+// let dratio = 6;
+// dration: 0 = fast; 10 = slow
+let dratio = 3;
 let innerRectWidth = (canvas.width * 25) / 100;
 let innerRectHeight = (canvas.height * 25) / 100;
 let innerRectStartX = (canvas.width / 2) - (innerRectWidth / 2);
 let innerRectStartY = (canvas.height / 2) - (innerRectHeight / 2);
 
-// variables that will change to move forward the element 
+// variables that will change to move toward the user
 let animateInnerRectWidth = Math.floor(innerRectWidth);
 let animateInnerRectHeight = innerRectHeight;
 let animateInnerRectStartX = Math.floor(innerRectStartX);
@@ -91,7 +93,9 @@ function Rectangle(
   innerRectWidth,
   innerRectHeight,
   innerRectStartX,
-  innerRectStartY) {
+  innerRectStartY,
+  posX,
+  posY) {
 
   this.animateInnerRectStartX = animateInnerRectStartX;
   this.animateInnerRectStartY = animateInnerRectStartY;
@@ -102,9 +106,17 @@ function Rectangle(
   this.ratioH = ratioH;
   this.innerRectWidth = innerRectWidth;
   this.innerRectHeight = innerRectHeight;
-  this.innerRectStartX = innerRectStartX;
-  this.innerRectStartY = innerRectStartY;
+  // this.innerRectStartX = innerRectStartX;
+  // this.innerRectStartY = innerRectStartY;
+  this.posX = posX;
+  this.posY = posY;
+  this.innerRectStartX = (this.posX - (this.innerRectWidth / 2));
+  this.innerRectStartY = (this.posY - (this.innerRectHeight / 2));
+  /**
+   * we need to change the "innerRectStartX" with "posX - (innerRectWidth / 2)"
+   */
   // draw the rectangle that will move towards you 
+  console.log(this.posX);
   this.draw_rekt = function () {
     // MOVEMENT ELEMENT
     ctx.beginPath();
@@ -118,7 +130,12 @@ function Rectangle(
     ctx.stroke();
     // console.log('draw');
   }
-
+  this.posCursor = function(){
+    canvas.addEventListener('mousemove', e => {
+      this.posX = e.pageX;
+      this.posY = e.pageY;
+    });
+  }
   this.update = function () {
     // console.log('update'); when the animated width > canvas.width come back
     // to the originals proportions
@@ -139,6 +156,23 @@ function Rectangle(
     this.draw_rekt();
   }
 }
+
+
+let posX = 0;
+let posY = 0;
+
+canvas.addEventListener('mousemove', e => {
+  /**
+   * can't find a good way to track the mouse inside the canvas because there is
+   * always a space for the border + other stuff
+   * border + margin + other stuff change the position of the cursor 
+   *
+   */
+    // posX = e.clientX; posY = e.clientY;
+    posX = e.pageX;
+    posY = e.pageY;
+    // console.log(posX, posY)
+});
 var rekt = new Rectangle(
   animateInnerRectStartX,
   animateInnerRectStartY,
@@ -150,22 +184,9 @@ var rekt = new Rectangle(
   innerRectWidth,
   innerRectHeight,
   innerRectStartX,
-  innerRectStartY);
-
-let posX = 0;
-let posY = 0;
-canvas.addEventListener('mousemove', e => {
-
-  /**
-   * can't find a good way to track the mouse inside the canvas because there is
-   * always a space for the border + other stuff
-   *
-   */
-    // posX = e.clientX; posY = e.clientY;
-    posX = e.pageX;
-    posY = e.pageY;
-    // console.log(posX, posY)
-});
+  innerRectStartY,
+  posX,
+  posY);
 /**
  * create a something that will follow the mouse
  * 
@@ -176,44 +197,87 @@ function animate() {
   requestAnimationFrame(animate);
   ctx.clearRect(0, 0, innerWidth, innerHeight);
 
-  // DRAW A RECTANGLE
-  // *****************************************
-  // c.fillRect(x, y, width, height); 
-  // STATIC ELEMENT
+  
+  // STATIC ELEMENT - this is the rectangle in the middle of the screen
+  // ctx.beginPath();
+  // ctx.strokeStyle = "#10eaf0";
+  // ctx.rect(innerRectStartX, innerRectStartY, innerRectWidth, innerRectHeight);
+  // ctx.stroke();
+
+  // lines that goes from the border of the canvas to the center rectangle
+  // top-left line 
+  // ctx.beginPath();
+  // ctx.moveTo(0, 0);
+  // ctx.lineTo(innerRectStartX, innerRectStartY);
+  // ctx.strokeStyle = "#10eaf0";
+  // ctx.stroke();
+
+  // // top-right line 
+  // ctx.beginPath();
+  // ctx.moveTo(canvas.width, 0);
+  // ctx.lineTo((innerRectWidth + innerRectStartX), innerRectStartY);
+  // ctx.strokeStyle = "#10eaf0";
+  // ctx.stroke();
+
+  // // bottom-right
+  // ctx.beginPath();
+  // ctx.moveTo(canvas.width, canvas.height);
+  // ctx.lineTo((innerRectWidth + innerRectStartX), (innerRectHeight + innerRectStartY));
+  // ctx.strokeStyle = "#10eaf0";
+  // ctx.stroke();
+
+  // bottom-left line
+  // ctx.beginPath();
+  // ctx.moveTo(0, canvas.height);
+  // ctx.lineTo(innerRectStartX, (innerRectHeight + innerRectStartY));
+  // ctx.strokeStyle = "#10eaf0";
+  // ctx.stroke();
+/**
+ * 
+ * code that implement movement to lines 
+ * 
+ */
   ctx.beginPath();
   ctx.strokeStyle = "#10eaf0";
-  ctx.rect(innerRectStartX, innerRectStartY, innerRectWidth, innerRectHeight);
+  ctx.rect(posX - (innerRectWidth / 2), posY - (innerRectHeight / 2), innerRectWidth, innerRectHeight);
   ctx.stroke();
 
   // top-left line 
   ctx.beginPath();
   ctx.moveTo(0, 0);
-  ctx.lineTo(innerRectStartX, innerRectStartY);
+  ctx.lineTo(posX - (innerRectWidth / 2), posY - (innerRectHeight / 2));
+  // ctx.lineTo(innerRectStartX, innerRectStartY);
   ctx.strokeStyle = "#10eaf0";
   ctx.stroke();
 
   // top-right line 
   ctx.beginPath();
   ctx.moveTo(canvas.width, 0);
-  ctx.lineTo((innerRectWidth + innerRectStartX), innerRectStartY);
+  ctx.lineTo((innerRectWidth / 2 + posX), posY - (innerRectHeight / 2));
+  // ctx.lineTo((innerRectWidth + innerRectStartX), innerRectStartY);
   ctx.strokeStyle = "#10eaf0";
   ctx.stroke();
 
   // bottom-right
   ctx.beginPath();
   ctx.moveTo(canvas.width, canvas.height);
-  ctx.lineTo((innerRectWidth + innerRectStartX), (innerRectHeight + innerRectStartY));
+  // ctx.lineTo((innerRectWidth + innerRectStartX), (innerRectHeight + innerRectStartY));
+  ctx.lineTo((innerRectWidth / 2 + posX), (innerRectHeight / 2 + posY));
   ctx.strokeStyle = "#10eaf0";
   ctx.stroke();
 
   // bottom-left line
   ctx.beginPath();
   ctx.moveTo(0, canvas.height);
-  ctx.lineTo(innerRectStartX, (innerRectHeight + innerRectStartY));
+  ctx.lineTo(posX -(innerRectWidth/2), posY + (innerRectHeight/2));
+  // ctx.lineTo(innerRectStartX, (innerRectHeight + innerRectStartY));
+  // ctx.lineTo(x, y);
   ctx.strokeStyle = "#10eaf0";
   ctx.stroke();
 
-  // cursor
+
+
+  // cursor design inside the canvas
   ctx.beginPath();
   ctx.moveTo(posX, posY);
   ctx.lineTo(posX, 0);
